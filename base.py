@@ -1,9 +1,9 @@
 from typing import List, Tuple
 
-from abc import abstractmethod
+from abc import abstractmethod, ABC
 
 
-class BaseIndexer:
+class BaseIndexer(ABC):
 
     def __init__(self):
         self.is_built = False
