@@ -12,7 +12,9 @@ class IndexerFactory:
     def register(self, name: str, indexer: BaseIndexer):
         if name in self.indexers:
             raise KeyError(
-                'Indexer [{}] has existed. Please use another name',
+                'Indexer [{}] has existed. Please use another name'.format(
+                    name,
+                ),
             )
         self.indexers[name] = indexer
 
