@@ -8,18 +8,15 @@
     {
       "op_name": "Pad",
       "op_kwargs": {
-        "sos_token": "<sos>",
-        "eos_token": "</s>",
         "pad_token": "<pad>",
         "maxlen": 7
       },
       "state": {
-        "maxlen": 7,
-        "pad_token": "<pad>"
+        "maxlen": 7
       }
     },
     {
-      "op_name": "TokenToIndexWithUNK",
+      "op_name": "TokenToIndex",
       "op_kwargs": {
         "unk_token": "<unk>",
         "token2index": {

@@ -31,9 +31,9 @@ class StrpipeLoaderTestCase(TestCase):
         tx_data, meta = self.indexer.transform(self.input_data)
         self.assertEqual(
             [
-                [0, 4, 5, 3, 3, 3, 3],
-                [0, 3, 3, 3, 3, 3, 6],
-                [0, 5, 8, 3, 10, 3, 1],
+                [4, 5, 3, 3, 3, 3, 3],
+                [3, 3, 3, 3, 3, 6, 7],
+                [5, 8, 3, 10, 3, 3, 3],
             ],
             tx_data,
         )
