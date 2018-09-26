@@ -21,8 +21,7 @@ class StrpipeLoader(BaseIndexer):
             self,
             utterances: List[str],
         ) -> Tuple[List[List[int]], List[dict]]:
-        tx_utt, tx_info = self.pipe.transform(utterances)
-        return tx_utt, tx_info
+        return self.pipe.transform(utterances)
 
     def inverse_transform(
             self,
