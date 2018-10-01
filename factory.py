@@ -17,7 +17,7 @@ class IndexerFactory:
         self.indexers[name] = indexer
 
     def get_indexer(self, name):
-        if name in self.indexers:
+        if name not in self.indexers:
             raise KeyError(
                 f'Indexer [{name}] has not found.',
             )
