@@ -50,7 +50,7 @@ class CharwtWord2Vec(BaseIndexer):
             },
         )
         p.add_step_by_op_name(
-            'TokenToIndexWithUNK',
+            'TokenToIndex',
             op_kwargs={
                 'unk_token': self.unk_token,
                 'token2index': self.word2vec['token2index'],
