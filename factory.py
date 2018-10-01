@@ -23,3 +23,9 @@ class IndexerFactory:
             )
             self.indexers[name].build()
         return self.indexers[name]
+
+    def __getitem__(self, name):
+        return self.get_indexer(name)
+
+    def __setitem__(self, name, indexer):
+        return self.register(name, indexer)
