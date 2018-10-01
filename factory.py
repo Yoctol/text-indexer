@@ -12,16 +12,14 @@ class IndexerFactory:
     def register(self, name: str, indexer: BaseIndexer):
         if name in self.indexers:
             raise KeyError(
-                'Indexer [{}] has existed. Please use another name'.format(
-                    name,
-                ),
+                f'Indexer [{name}] has existed. Please use another name',
             )
         self.indexers[name] = indexer
 
     def get_indexer(self, name):
         if name in self.indexers:
             raise KeyError(
-                'Indexer [{}] has not found.',
+                f'Indexer [{name}] has not found.',
             )
             self.indexers[name].build()
         return self.indexers[name]
