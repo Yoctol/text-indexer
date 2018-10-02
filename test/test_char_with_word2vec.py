@@ -14,9 +14,10 @@ class CharwtWord2VecTestCase(TestCase):
             maxlen=self.maxlen,
         )
         self.input_data = [
-            '克安是牛肉大粉絲',
-            '繼良喜歡喝星巴巴',
-            '安靜的祥睿',
+            '克安是牛肉大粉絲',  # longer than 7 after adding sos eos
+            '繼良喜歡喝星巴巴',  # longer than 7 after adding sos eos
+            '安靜的祥睿',  # equal to 7 after adding sos eos
+            '喔',  # shorter than 7 after adding sos eos
         ]
 
     def test_correctly_init(self):
@@ -38,12 +39,13 @@ class CharwtWord2VecTestCase(TestCase):
                 [0, 4, 5, 3, 3, 3, 3],
                 [0, 3, 3, 3, 3, 3, 6],
                 [0, 5, 8, 3, 10, 3, 1],
+                [0, 3, 1, 3, 3, 3, 3],
             ],
             tx_data,
         )
 
         self.assertEqual(
-            [8, 8, 5],
+            [7, 7, 7, 3],
             meta['seqlen'],
         )
 

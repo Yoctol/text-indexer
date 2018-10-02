@@ -41,10 +41,15 @@ class CharwtWord2Vec(BaseIndexer):
         p = sp.Pipe()
         p.add_step_by_op_name('CharTokenizer')
         p.add_step_by_op_name(
-            'Pad',
+            'AddSosEos',
             op_kwargs={
                 'sos_token': self.sos_token,
                 'eos_token': self.eos_token,
+            },
+        )
+        p.add_step_by_op_name(
+            'Pad',
+            op_kwargs={
                 'pad_token': self.pad_token,
                 'maxlen': self.maxlen,
             },
@@ -64,12 +69,19 @@ class CharwtWord2Vec(BaseIndexer):
             utterances: List[str],
         ) -> Tuple[List[List[int]], dict]:
         tx_utt, tx_info = self.pipe.transform(utterances)
-        seqlen = [info['sentlen'] for info in tx_info[1]]
+        seqlen = [info['sentlen'] for info in tx_info[2]]
         output_info = {
-            'seqlen': seqlen,
+            'seqlen': self._padded_seqlen(seqlen, self.maxlen),
             'inv_info': tx_info,
         }
         return tx_utt, output_info
+
+    @staticmethod
+    def _padded_seqlen(sentlen: List[int], maxlen: int) -> List[int]:
+        output = [0] * len(sentlen)
+        for i, l in enumerate(sentlen):
+            output[i] = min(maxlen, l)
+        return output
 
     def inverse_transform(
             self,
