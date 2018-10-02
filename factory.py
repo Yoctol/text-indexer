@@ -21,7 +21,7 @@ class IndexerFactory:
             raise KeyError(
                 f'Indexer [{name}] has not found.',
             )
-            self.indexers[name].build()
+        self.indexers[name].build()
         return self.indexers[name]
 
     def __getitem__(self, name):
