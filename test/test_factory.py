@@ -47,14 +47,14 @@ class IndexerFactoryTestCase(TestCase):
             maxlen=self.maxlen,
         )
         factory.register('test indexer', indexer)
+        self.assertFalse(
+            factory.indexers[factory.list_all()[0]].is_built,
+        )
         self.assertEqual(
             indexer,
             factory.get_indexer('test indexer'),
         )
-        self.assertEqual(
-            indexer.is_built,
-            True,
-        )
+        self.assertTrue(indexer.is_built)
 
     def test__getitem__and__setitem(self):
         factory = IndexerFactory()
