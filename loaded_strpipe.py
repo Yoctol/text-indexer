@@ -5,7 +5,7 @@ import strpipe as sp
 from .base import BaseIndexer
 
 
-class StrpipeLoader(BaseIndexer):
+class LoadedStrpipe(BaseIndexer):
 
     def __init__(self, path: str):
         self._path = path

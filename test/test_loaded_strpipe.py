@@ -1,16 +1,16 @@
 from unittest import TestCase
 
 from pathlib import Path
-from ..strpipe_loader import StrpipeLoader
+from ..loaded_strpipe import LoadedStrpipe
 
 
-class StrpipeLoaderTestCase(TestCase):
+class LoadedStrpipeTestCase(TestCase):
 
     def setUp(self):
         self.strpipe_json_path = str(
             Path(__file__).resolve().parent.joinpath('data/example.json'))
         self.maxlen = 7
-        self.indexer = StrpipeLoader(
+        self.indexer = LoadedStrpipe(
             path=self.strpipe_json_path,
         )
         self.input_data = [
