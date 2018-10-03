@@ -39,7 +39,7 @@ class IndexerFactoryTestCase(TestCase):
         with self.assertRaises(KeyError):
             factory.get_indexer('some random key')
 
-    def test_get_indexer_exists_correctly(self):
+    def test_get_indexer_exists_correctly_also_build_indexer(self):
         factory = IndexerFactory()
         indexer = CharwtWord2Vec(
             word2vec_path=str(
@@ -50,6 +50,10 @@ class IndexerFactoryTestCase(TestCase):
         self.assertEqual(
             indexer,
             factory.get_indexer('test indexer'),
+        )
+        self.assertEqual(
+            indexer.is_built,
+            True,
         )
 
     def test__getitem__and__setitem(self):
