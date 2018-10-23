@@ -16,13 +16,15 @@ setup(
     description="Yoctol Text Indexer",
     url="https://github.com/Yoctol/text-indexer",
     license="MIT",
-    author="Yoctol",
+    author="Yoctol Info",
+    author_email='yien.tsai@yoctol.com',
     packages=find_packages(),
     python_requires='>=3.6',
     install_requires=[
         "strpipe==0.4.7",
         "u-msgpack-python==2.5.0",
     ],
+    include_package_data=True,
     long_description=long_description,
     classifiers=[
         "Programming Language :: Python",
