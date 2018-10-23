@@ -1,0 +1,24 @@
+[[source]]
+
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+
+[packages]
+
+strpipe = "*"
+u-msgpack-python = "==2.5.0"
+cython = "*"
+
+
+[dev-packages]
+
+"flake8" = "*"
+ipdb = "==0.10.3"
+"flake8-config-yoctol" = "*"
+
+
+[requires]
+
+python_version = "3.6"

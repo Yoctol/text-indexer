@@ -1,0 +1,22 @@
+language: python
+
+cache: pip
+
+python:
+- '3.6'
+- 'nightly'
+
+matrix:
+  allow_failures:
+  - python: 'nightly'
+
+before_install:
+  - sudo apt-get update
+  - sudo apt-get install pandoc -y
+
+install:
+- make install
+
+script:
+- make lint
+- make test
