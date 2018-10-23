@@ -3,7 +3,7 @@ from os.path import join
 from .factory import IndexerFactory
 from .char_with_word2vec import CharwtWord2Vec
 
-from ...global_vars import RESOURCES_PATH
+from .global_vars import RESOURCES_PATH
 
 
 factory = IndexerFactory()
