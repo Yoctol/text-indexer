@@ -47,6 +47,7 @@ class CharwtWord2Vec(BaseIndexer):
                 'eos_token': self.eos_token,
             },
         )
+        p.add_checkpoint()
         p.add_step_by_op_name(
             'Pad',
             op_kwargs={
@@ -68,19 +69,21 @@ class CharwtWord2Vec(BaseIndexer):
             self,
             utterances: List[str],
         ) -> Tuple[List[List[int]], dict]:
-        tx_utt, tx_info = self.pipe.transform(utterances)
-        seqlen = [info['sentlen'] for info in tx_info[2]]
+        result, tx_info, intermediates = self.pipe.transform(utterances)
         output_info = {
-            'seqlen': self._padded_seqlen(seqlen, self.maxlen),
+            'seqlen': self._compute_seqlen(intermediates[0], maxlen=self.maxlen),
             'inv_info': tx_info,
         }
-        return tx_utt, output_info
+        return result, output_info
 
     @staticmethod
-    def _padded_seqlen(sentlen: List[int], maxlen: int) -> List[int]:
-        output = [0] * len(sentlen)
-        for i, l in enumerate(sentlen):
-            output[i] = min(maxlen, l)
+    def _compute_seqlen(
+            sentences: List[List[str]],
+            maxlen: int,
+        ) -> List[int]:
+        output = [0] * len(sentences)
+        for i, sent in enumerate(sentences):
+            output[i] = min(len(sent), maxlen)
         return output
 
     def inverse_transform(
