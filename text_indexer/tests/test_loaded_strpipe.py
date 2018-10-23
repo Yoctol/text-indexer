@@ -28,7 +28,7 @@ class LoadedStrpipeTestCase(TestCase):
 
     def test_transform(self):
         self.indexer.build()
-        tx_data, meta = self.indexer.transform(self.input_data)
+        tx_data, meta, _ = self.indexer.transform(self.input_data)
         self.assertEqual(
             [
                 [4, 5, 3, 3, 3, 3, 3],
@@ -40,7 +40,7 @@ class LoadedStrpipeTestCase(TestCase):
 
     def test_inverse_transform(self):
         self.indexer.build()
-        tx_data, meta = self.indexer.transform(self.input_data)
+        tx_data, meta, _ = self.indexer.transform(self.input_data)
         output = self.indexer.inverse_transform(tx_data, meta)
         self.assertEqual(
             output,

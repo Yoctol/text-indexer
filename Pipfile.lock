@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "78e6dd206581484b6d218d1458414ad8caff4cd7acdac74eb4362ea7c3685f78"
+            "sha256": "58582f8cf7965a72ffe043929f751c1de2fca6eb34c044b57b7d331d69a86deb"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -29,9 +29,9 @@
         ]
     },
     "default": {
-        "cython": {
-            "hashes": [],
-            "version": "==0.29"
+        "dope-flow": {
+            "editable": true,
+            "path": "."
         },
         "jieba": {
             "hashes": [],

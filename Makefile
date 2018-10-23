@@ -2,16 +2,17 @@
 
 .PHONY: install
 install:
-    pipenv run pip install -U Cython
-    pipenv install --dev
+	pip install pipenv
+	pipenv install --dev
 
 .PHONY: lint
 lint:
- 	pipenv run python -m flake8 .
+	pipenv run python -m flake8 .
 
 .PHONY: test
 test:
-	pipenv run python -m unittest
+	RESOURCES_PATH=test_resources_path pipenv run python -m unittest -v
+
 
 .PHONY: all
 all: test lint

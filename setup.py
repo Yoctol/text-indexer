@@ -18,8 +18,11 @@ setup(
     license="MIT",
     author="Yoctol",
     packages=find_packages(),
-    python_requires='==3.6',
-    install_requires=[],
+    python_requires='>=3.6',
+    install_requires=[
+        "strpipe==0.4.7",
+        "u-msgpack-python==2.5.0",
+    ],
     long_description=long_description,
     classifiers=[
         "Programming Language :: Python",
