@@ -1,4 +1,8 @@
 # text-indexer
+
+[![Build Status](https://travis-ci.org/Yoctol/text-indexer.svg?branch=master)](https://travis-ci.org/Yoctol/text-indexer) 
+[![PyPI version](https://badge.fury.io/py/text-indexer.svg)](https://badge.fury.io/py/text-indexer)
+
 Indexer transforms list of strings to list of integers according to the string2int mapping function(e.q. a look-up table).
 
 ## Getting Started
