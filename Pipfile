@@ -1,0 +1,16 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+strpipe = {ref = "v0.3.0", editable = true, git = "ssh://git@github.com/Yoctol/strpipe.git"}
+u-msgpack-python= "==2.5.0"
+
+[dev-packages]
+"flake8" = "*"
+ipdb = "==0.10.3"
+"flake8-config-yoctol" = "*"
+
+[requires]
+python_version = "3.6"
