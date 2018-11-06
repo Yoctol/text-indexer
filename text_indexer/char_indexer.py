@@ -1,5 +1,7 @@
-import strpipe as sp
 from typing import List
+import warnings
+
+import strpipe as sp
 
 from .pipe_indexer import PipeIndexer
 
@@ -14,12 +16,13 @@ class CharIndexer(PipeIndexer):
             unk_token: str = '<unk>',
             maxlen: int = 50,
         ):
-
-        self.maxlen = maxlen
-        self.sos_token = sos_token
-        self.eos_token = eos_token
-        self.pad_token = pad_token
-        self.unk_token = unk_token
+        super().__init__(
+            sos_token=sos_token,
+            eos_token=eos_token,
+            pad_token=pad_token,
+            unk_token=unk_token,
+            maxlen=maxlen,
+        )
         self.pipe = self._build_pipe()
 
     def _build_pipe(self):
@@ -63,12 +66,13 @@ class CharwtWord2Vec(PipeIndexer):
             unk_token: str = '<unk>',
             maxlen: int = 50,
         ):
-
-        self.maxlen = maxlen
-        self.sos_token = sos_token
-        self.eos_token = eos_token
-        self.pad_token = pad_token
-        self.unk_token = unk_token
+        super().__init__(
+            sos_token=sos_token,
+            eos_token=eos_token,
+            pad_token=pad_token,
+            unk_token=unk_token,
+            maxlen=maxlen,
+        )
         self.word2vec = word2vec
         self.pipe = self._build_pipe()
 
@@ -97,8 +101,11 @@ class CharwtWord2Vec(PipeIndexer):
                 'token2index': self.word2vec['token2index'],
             },
         )
-        p.fit(['test test'])
         return p
 
     def fit(self, utterances: List[str]):
-        pass
+        warnings.warn(
+            "CharwtWord2Vec fit function doesn't actually fit on utterances.",
+            UserWarning,
+        )
+        self.pipe.fit(['dummy fit'])
