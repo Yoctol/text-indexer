@@ -6,11 +6,11 @@ from abc import abstractmethod, ABC
 class BaseIndexer(ABC):
 
     def __init__(self):
-        self.is_built = False
+        self.is_fitted = False
 
     @abstractmethod
-    def build(self) -> None:
-        raise NotImplementedError
+    def fit(self, data: List[str]) -> None:
+        pass
 
     @abstractmethod
     def transform(
@@ -18,7 +18,7 @@ class BaseIndexer(ABC):
             data: List[str],
         ) -> Tuple[List[List[int]], dict]:
         """Transform strings to indices"""
-        raise NotImplementedError
+        pass
 
     @abstractmethod
     def inverse_transform(
@@ -26,4 +26,12 @@ class BaseIndexer(ABC):
             data: List[List[int]],
         ) -> List[str]:
         """Restore indices to strings"""
-        raise NotImplementedError
+        pass
+
+    @abstractmethod
+    def save(self, output_path: str):
+        pass
+
+    @abstractmethod
+    def load(self, output_path: str):
+        pass
