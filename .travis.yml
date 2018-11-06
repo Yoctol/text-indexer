@@ -1,34 +1,23 @@
 language: python
-
 cache: pip
-
-python:
-- '3.6'
-- 'nightly'
-
+python: 3.6
 matrix:
   allow_failures:
-  - python: 'nightly'
-
+  - python: nightly
 before_install:
-  - sudo apt-get update
-  - sudo apt-get install pandoc -y
-
+- sudo apt-get update
+- sudo apt-get install pandoc -y
 install:
 - make install
-
 script:
 - make lint
 - make test
-
 deploy:
   provider: pypi
   user: solumilken
   password:
-    secure: u4zvuTuu8DJtrZIbM0rwg1QEfTftoW1FstJ3JPO2UDmVU40W4O+5YXlElIkfvz9buYbuDkGCYEVGpQZrPz7CscATLmnzNVV2XL4N2yjjK4Og1YO1o/ctfGuUNxX0XXxuGTRhvddfpLxn+X3dk69bdfGNyZZoQmpPKVUtFMoNsUKzzIiJ7EFVlwttHKSkUTroNg3UtovLwolh2f7bR8UXo49YkRZHyjWn4au0s2ZC3VGwFDxCe8KqgQuVluMydS27YbBNOhoAzu2X1wyxy79iCvRKltIaZLnnKFluaf4Z7MQbbaSXTzwNzywk76pD2q0L0YZP7IKMKIWMY84nWZAD9FEe3CeFtDDl0WoYo5ssWcbT/bEOqUh4qYQO34Smo/WMeK0UZBp7XHLxkIa3MLo3Fsfu5dJYDHPzoUqKdwtIMbgPeSZv/x1FQVRKl5GjmESYI3JY2v5nRmmAEXRbQCGLQfMBMW+GMuPm5hCLZxD/TAMw8xxaIyrQi4awJF2CNI7lHRW/s6Qs/XiEo3DMByBMHH+NhCPhPj7N6Ru0nygboyZaDVhGh0lgeWsXpLwcA5tICtVwhYQwDWIxLi++HVqHMF5MKAULotvtnriPmoiZutGm8+YugaGQDAehvUmJRW71aMaoEQh+SnRH5LmUsYackIrzRAxtGWdkC5qznlsjeUk=
+    secure: GfWUkCX3FP0YuTFVrsleb3L3x9Y3m5BiTMW9OljsQ+q8xV0b3wiXdnB/kNs9eHTsIP7mlk9zVM5MG5YIWnhK64IPaTSpkyjB73F6gdk4A1JCWtdHs7XK6+NRPTzF5X6WvMx2erH0/OrAwIDfYT4yQqxVFFX6Mjb9d3BXU5oP1O0NzYOyQabhND064cDMpqZ8tiFcVRXhLnNi42SOKcJ9ITklyah7oDdE5HvQtCZ0PFOQYNelusq4KdMATbzl36ad3mdw/wEVDT50kMDzX+ddKezG4pkWHa/ycotA64tE3yvJlJJdYHxgNCUYZ2Zxb1sKr59L53/8DlZ0jul2G3y1tqPJNmR0an9FQMZZH0jHrSja90anUV0rSyG1m2X+XhEkuOJNcMYIknvFgAa3oub2k+Gyjl8IeNY9sI2A9DW+wzhlGK+Qg82H/zr9IGg94u1kR6nTZzavOVMsntDWTpa9dQ4MCmLE0Fy4XXF1mmUC+N6o7FY2mPJOhECIu4FYi49lISuVZ9WF6Hlcr6tdfM8E2q0txiIMicBK8Cqx3+C6+w6G+a9R/ylg42xP7uRu/o+H0xNb4GTVcnyaQ2YwPWQYivF00auyAghjAGRXaTzJsVg/Kn5FH3AkDtLJPkVvBN8/Aq0ddqZWuZPzogIooWhMrTdYq7apJdLNn2I4IBTqV3w=
   distributions: sdist bdist_wheel
   skip_upload_docs: true
   on:
     tags: true
-
-python: 3.6
