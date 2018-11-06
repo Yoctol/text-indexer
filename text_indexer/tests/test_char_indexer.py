@@ -35,6 +35,7 @@ class CharwtWord2VecTestCase(TestCase):
             word2vec=self.test_emb,
             maxlen=self.maxlen,
         )
+        self.indexer.fit(self.input_data)
 
     def test_transform_and_fit_dont_change(self):
         tx_data, meta = self.indexer.transform(self.input_data)
