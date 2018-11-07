@@ -1,10 +1,10 @@
 import abc
 from typing import List, Tuple
 
-from .base import BaseIndexer
+from .base import Indexer
 
 
-class PipeIndexer(BaseIndexer):
+class PipeIndexer(Indexer):
 
     def __init__(
             self,
@@ -68,3 +68,9 @@ class PipeIndexer(BaseIndexer):
             tx_info: List[dict],
         ) -> List[str]:
         return self.pipe.inverse_transform(indices, tx_info)
+
+    def save(self, output_dir: str):
+        pass
+
+    def load(cls) -> Indexer:
+        pass
