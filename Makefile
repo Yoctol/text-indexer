@@ -11,7 +11,7 @@ lint:
 
 .PHONY: test
 test:
-	RESOURCES_PATH=test_resources_path pipenv run python -m unittest -v
+	pipenv run python -m unittest -v
 
 
 .PHONY: all
