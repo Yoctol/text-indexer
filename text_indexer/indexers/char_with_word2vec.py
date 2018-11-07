@@ -3,7 +3,7 @@ import os
 
 import strpipe as sp
 
-from .base import BaseIndexer
+from .base import Indexer
 from .utils import save_json, load_json
 
 
@@ -28,7 +28,7 @@ from .utils import save_json, load_json
 #         return index2token[index]
 
 
-class CharwtWord2Vec(BaseIndexer):
+class CharwtWord2Vec(Indexer):
 
     def __init__(
             self,

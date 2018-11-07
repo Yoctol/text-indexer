@@ -3,7 +3,7 @@ from typing import List, Tuple
 from abc import abstractmethod, ABC
 
 
-class BaseIndexer(ABC):
+class Indexer(ABC):
 
     def __init__(self):
         self.is_fitted = False

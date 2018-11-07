@@ -2,10 +2,10 @@ from typing import List, Tuple
 
 import strpipe as sp
 
-from .base import BaseIndexer
+from .base import Indexer
 
 
-class LoadedStrpipe(BaseIndexer):
+class LoadedStrpipe(Indexer):
 
     def __init__(self, path: str):
         self._path = path
