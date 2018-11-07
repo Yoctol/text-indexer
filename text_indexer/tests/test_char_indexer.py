@@ -3,6 +3,7 @@ from unittest import TestCase
 from pathlib import Path
 import umsgpack
 
+from .template import TestTemplate
 from ..char_indexer import (
     CharIndexer,
     CharwtWord2Vec,
@@ -15,64 +16,87 @@ def load_w2v(path: str):
     return word2vec
 
 
-class CharwtWord2VecTestCase(TestCase):
+class CharIndexerTestCase(TestTemplate, TestCase):
+
+    def get_indexer(self):
+        return CharIndexer(
+            sos_token=self.sos_token,
+            eos_token=self.eos_token,
+            pad_token=self.pad_token,
+            unk_token=self.unk_token,
+            maxlen=self.maxlen,
+        )
+
+    def get_correct_idxs_and_seqlen_of_input_data(self):
+        correct_idxs = []
+        for sent in self.input_data:
+            sent_idxs = [self.indexer.word2index(self.indexer.sos_token)]
+            for word in sent:
+                try:
+                    sent_idxs.append(
+                        self.indexer.word2index(word),
+                    )
+                except KeyError:
+                    sent_idxs.append(
+                        self.indexer.word2index(self.indexer.unk_token),
+                    )
+            sent_idxs.append(self.indexer.word2index(self.indexer.eos_token))
+            if len(sent_idxs) > self.maxlen:
+                sent_idxs = sent_idxs[:self.maxlen]
+            while len(sent_idxs) < self.maxlen:
+                sent_idxs.append(self.indexer.word2index(self.indexer.pad_token))
+            assert len(sent_idxs) == self.maxlen
+            correct_idxs.append(sent_idxs)
+
+        correct_seqs = [
+            min(len(sent) + 2, self.maxlen)
+            for sent in self.input_data
+        ]
+        return correct_idxs, correct_seqs
+
+
+class CharwtWord2VecTestCase(CharIndexerTestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.maxlen = 7
         cls.test_emb = load_w2v(
             Path(__file__).resolve().parent.joinpath('data/example.msg'),
         )
-        cls.input_data = [
-            '克安是牛肉大粉絲',  # longer than 7 after adding sos eos
-            '繼良喜歡喝星巴巴',  # longer than 7 after adding sos eos
-            '安靜的祥睿',  # equal to 7 after adding sos eos
-            '喔',  # shorter than 7 after adding sos eos
-        ]
+        super().setUpClass()
 
-    def setUp(self):
-        self.indexer = CharwtWord2Vec(
+    def get_indexer(self):
+        return CharwtWord2Vec(
             word2vec=self.test_emb,
+            sos_token=self.sos_token,
+            eos_token=self.eos_token,
+            pad_token=self.pad_token,
+            unk_token=self.unk_token,
             maxlen=self.maxlen,
-        )
-        self.indexer.fit(self.input_data)
-
-    def test_transform_and_fit_dont_change(self):
-        tx_data, meta = self.indexer.transform(self.input_data)
-        self.assertEqual(
-            [
-                [0, 4, 5, 3, 3, 3, 3],
-                [0, 3, 3, 3, 3, 3, 6],
-                [0, 5, 8, 3, 10, 3, 1],
-                [0, 3, 1, 2, 2, 2, 2],
-            ],
-            tx_data,
-        )
-        self.assertEqual(
-            [7, 7, 7, 3],
-            meta['seqlen'],
-        )
-        self.indexer.fit(self.input_data)
-        self.assertEqual(
-            [
-                [0, 4, 5, 3, 3, 3, 3],
-                [0, 3, 3, 3, 3, 3, 6],
-                [0, 5, 8, 3, 10, 3, 1],
-                [0, 3, 1, 3, 3, 3, 3],
-            ],
-            tx_data,
-        )
-
-    def test_inverse_transform(self):
-        tx_data, meta = self.indexer.transform(self.input_data)
-        output = self.indexer.inverse_transform(tx_data, meta['inv_info'])
-        self.assertEqual(
-            output,
-            self.input_data,
         )
 
     def test_embedding_correct(self):
         self.assertEqual(
             len(self.indexer.word2vec),
             len(self.test_emb),
+        )
+
+    def test_transform_and_fit_dont_change(self):
+        tx_data, meta = self.indexer.transform(self.input_data)
+        correct_idxs, correct_seqs = self.get_correct_idxs_and_seqlen_of_input_data()
+        self.assertEqual(
+            correct_idxs,
+            tx_data,
+        )
+        self.assertEqual(
+            correct_seqs,
+            meta['seqlen'],
+        )
+        self.indexer.fit(self.input_data)
+        self.assertEqual(
+            correct_idxs,
+            tx_data,
+        )
+        self.assertEqual(
+            correct_seqs,
+            meta['seqlen'],
         )
