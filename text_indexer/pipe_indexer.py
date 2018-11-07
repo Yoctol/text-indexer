@@ -21,6 +21,7 @@ class PipeIndexer(BaseIndexer):
         self.pad_token = pad_token
         self.unk_token = unk_token
         self.maxlen = maxlen
+        self.pipe = self._build_pipe()
 
     @abc.abstractmethod
     def _build_pipe(self):
@@ -65,19 +66,3 @@ class PipeIndexer(BaseIndexer):
             tx_info: List[dict],
         ) -> List[str]:
         return self.pipe.inverse_transform(indices, tx_info)
-
-    def save(self, output_dir: str):
-        if not os.path.isdir(output_dir):
-            os.mkdir(output_dir)
-        self.pipe.save_json(os.path.join(output_dir, 'pipe.json'))
-        with open(os.path.join(output_dir, 'params.json'), 'w') as filp:
-            json.dump(
-                {
-                    'sos_token': self.sos_token,
-                    'eos_token': self.eos_token,
-                    'pad_token': self.pad_token,
-                    'unk_token': self.unk_token,
-                    'maxlen': self.maxlen,
-                },
-                filp,
-            )

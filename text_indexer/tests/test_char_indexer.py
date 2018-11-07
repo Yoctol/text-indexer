@@ -4,10 +4,7 @@ from pathlib import Path
 import umsgpack
 
 from .template import TestTemplate
-from ..char_indexer import (
-    CharIndexer,
-    CharwtWord2Vec,
-)
+from ..char_indexer import CharIndexer
 
 
 def load_w2v(path: str):
@@ -16,10 +13,10 @@ def load_w2v(path: str):
     return word2vec
 
 
-class CharIndexerTestCase(TestTemplate, TestCase):
+class CharIndexerWithoutW2vTestCase(TestTemplate, TestCase):
 
     def get_indexer(self):
-        return CharIndexer(
+        return CharIndexer.create_without_word2vec(
             sos_token=self.sos_token,
             eos_token=self.eos_token,
             pad_token=self.pad_token,
@@ -54,8 +51,11 @@ class CharIndexerTestCase(TestTemplate, TestCase):
         ]
         return correct_idxs, correct_seqs
 
+    def test_embedding_correct(self):
+        self.assertIsNone(self.indexer.word2vec)
 
-class CharwtWord2VecTestCase(CharIndexerTestCase):
+
+class CharIndexerWithW2vTestCase(CharIndexerWithoutW2vTestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -65,7 +65,7 @@ class CharwtWord2VecTestCase(CharIndexerTestCase):
         super().setUpClass()
 
     def get_indexer(self):
-        return CharwtWord2Vec(
+        return CharIndexer.create_with_word2vec(
             word2vec=self.test_emb,
             sos_token=self.sos_token,
             eos_token=self.eos_token,
@@ -76,8 +76,8 @@ class CharwtWord2VecTestCase(CharIndexerTestCase):
 
     def test_embedding_correct(self):
         self.assertEqual(
-            len(self.indexer.word2vec),
-            len(self.test_emb),
+            self.indexer.word2vec,
+            self.test_emb,
         )
 
     def test_transform_and_fit_dont_change(self):

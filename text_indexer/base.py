@@ -24,7 +24,3 @@ class BaseIndexer(ABC):
         ) -> List[str]:
         """Restore indices to strings"""
         pass
-
-    @abstractmethod
-    def save(self):
-        pass
