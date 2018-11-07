@@ -11,11 +11,11 @@ class LoadedStrpipe(Indexer):
         self._path = path
         super().__init__()
 
-    def build(self):
-        if not self.is_built:
+    def fit(self):
+        if not self.is_fitted:
             # restore strpipe
             self.pipe = sp.Pipe.restore_from_json(self._path)
-            self.is_built = True
+            self.is_fitted = True
 
     def transform(
             self,
@@ -29,3 +29,10 @@ class LoadedStrpipe(Indexer):
             tx_info: List[dict],
         ) -> List[str]:
         return self.pipe.inverse_transform(indices, tx_info)
+
+    def save(self, output_path):
+        pass
+
+    @classmethod
+    def load(cls, path):
+        pass
