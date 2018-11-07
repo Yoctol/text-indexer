@@ -1,6 +1,4 @@
 import abc
-import os
-import json
 from typing import List, Tuple
 
 from .base import BaseIndexer
