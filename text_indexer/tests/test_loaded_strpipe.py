@@ -33,7 +33,7 @@ class LoadedStrpipeTestCase(TestCase):
             [
                 [4, 5, 3, 3, 3, 3, 3],
                 [3, 3, 3, 3, 3, 6, 7],
-                [5, 8, 3, 10, 3, 3, 3],
+                [5, 8, 3, 10, 3, 2, 2],
             ],
             tx_data,
         )
