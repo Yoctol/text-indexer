@@ -68,9 +68,3 @@ class PipeIndexer(Indexer):
             tx_info: List[dict],
         ) -> List[str]:
         return self.pipe.inverse_transform(indices, tx_info)
-
-    def save(self, output_dir: str):
-        pass
-
-    def load(cls) -> Indexer:
-        pass
