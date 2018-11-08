@@ -18,6 +18,7 @@ class CharIndexer(PipeIndexer):
             maxlen: int = 50,
         ):
         self.word2vec = word2vec
+        self._token2index_pipe_layer = None
         super().__init__(
             sos_token=sos_token,
             eos_token=eos_token,
@@ -97,7 +98,12 @@ class CharIndexer(PipeIndexer):
                     'token2index': self.word2vec['token2index'],
                 },
             )
+        self._token2index_pipe_layer = 3
         return p
+
+    @property
+    def token2index_pipe_layer(self):
+        return self._token2index_pipe_layer
 
     def fit(self, utterances: List[str]):
         if self.word2vec is None:

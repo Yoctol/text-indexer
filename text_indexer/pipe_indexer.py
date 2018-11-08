@@ -25,14 +25,18 @@ class PipeIndexer(BaseIndexer):
     def _build_pipe(self):
         pass
 
+    @abc.abstractproperty
+    def token2index_pipe_layer(self):
+        pass
+
     def word2index(self, word):
-        token2index = self.pipe.get_state(3)['token2index']
+        token2index = self.pipe.get_state(self.token2index_pipe_layer)['token2index']
         if word not in token2index:
             raise KeyError(f'{word} is not in vocab.')
         return token2index[word]
 
     def index2word(self, index):
-        index2token = self.pipe.get_state(3)['index2token']
+        index2token = self.pipe.get_state(self.token2index_pipe_layer)['index2token']
         if index not in index2token:
             raise KeyError(f'{index} is not in index map.')
         return index2token[index]
