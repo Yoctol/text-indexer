@@ -21,6 +21,7 @@ def save_indexer(
         indexer: Indexer,
         output_dir: str,
         logger: logging.Logger = LOGGER,
+        compress: bool = True,
     ) -> str:
 
     _validate_dir(output_dir)
@@ -33,12 +34,13 @@ def save_indexer(
     indexer.save(output_dir)  # save indexer
     del indexer
 
-    # compress
-    compressed_filepath = _compress_to_tar(output_dir)  # compressed
-    shutil.rmtree(output_dir)  # remove output_dir
-    logger.info(f'Export to {compressed_filepath}')
+    if compress:
+        # compress
+        compressed_filepath = _compress_to_tar(output_dir)  # compressed
+        shutil.rmtree(output_dir)  # remove output_dir
+        logger.info(f'Export to {compressed_filepath}')
 
-    return compressed_filepath
+        return compressed_filepath
 
 
 def load_indexer(
