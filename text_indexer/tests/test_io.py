@@ -41,6 +41,9 @@ class MockIndexer(object):
         indexer.pipe = pipe
         return indexer
 
+    def transform(self, utterances):
+        return [f"{self.aa}_{self.bb}_{utt}" for utt in utterances]
+
 
 class IOTestCase(TestCase):
 
@@ -70,5 +73,6 @@ class IOTestCase(TestCase):
     def test_load_indexer(self):
         save_indexer(indexer=MockIndexer(), output_dir=self.output_dir)
         with patch('text_indexer.io._get_indexer_module', return_value=MockIndexer):
-            load_indexer(self.output_dir)
-        self.assertTrue(exists(self.output_dir))
+            indexer = load_indexer(self.output_dir)
+        output = indexer.transform(['dummy_utt'])
+        self.assertEqual([f'{indexer.aa}_{indexer.bb}_dummy_utt'], output)

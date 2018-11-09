@@ -1,6 +1,4 @@
-from os.path import join, dirname, basename, isdir, isfile
-import tarfile
-import shutil
+from os.path import join, isdir
 import logging
 
 from .indexers import (
@@ -49,11 +47,6 @@ def load_indexer(
     return indexer
 
 
-def _validate_file(path: str):
-    if not isfile(path):
-        raise ValueError(f'[{path}] is not a file path.')
-
-
 def _validate_dir(directory: str):
     if not isdir(directory):
         raise ValueError(f'[{directory}] is not a directory.')
@@ -68,13 +61,6 @@ def _load_name(path: str) -> str:
     with open(path, 'r', encoding='utf-8') as text_file:
         name = text_file.read()
     return name
-
-
-def _compress_to_tar(output_dir: str) -> str:
-    tar_path = _gen_compression_path(output_dir)
-    with tarfile.open(tar_path, "w:gz") as tar:
-        tar.add(output_dir, arcname=basename(output_dir))
-    return tar_path
 
 
 def _gen_name_path(directory: str) -> str:
