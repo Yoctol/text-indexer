@@ -11,7 +11,9 @@ from .indexers import (
 
 LOGGER = logging.getLogger('__file__')
 INDEXERS = {
-    'CharIndexer': CharIndexer,
+    indexer_cls.__class__.__name__: indexer_cls for indexer_cls in [
+        CharIndexer,
+    ]
 }
 
 
