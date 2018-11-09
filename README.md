@@ -20,3 +20,20 @@ make install
 ```
 make test
 ```
+
+## How to completely save and load indexer?
+
+### 1. Save
+```python
+from text_indexer.io import save_indexer
+custom_indexer_instance = XXIndexer()
+save_indexer(indexer=custom_indexer_instance, output_dir='directory-to-export-indexer')
+```
+If output_dir is `/home/user/example/`, you will get a tar file  `/home/user/example-all.tar.gz` after calling 
+`save_indexer`.
+
+### 2. Load
+```python
+from text_indexer.io import load_indexer
+your_indexer = load_indexer(path='indexer-tar-filepath')
+```
