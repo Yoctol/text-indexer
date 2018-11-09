@@ -1,6 +1,6 @@
 from typing import List, Tuple
 
-from abc import abstractmethod, ABC
+from abc import abstractmethod, abstractclassmethod, ABC
 
 
 class Indexer(ABC):
@@ -29,6 +29,6 @@ class Indexer(ABC):
     def save(self, output_path: str):
         pass
 
-    @abstractmethod
-    def load(self, output_path: str):
+    @abstractclassmethod
+    def load(cls, output_path: str):
         pass

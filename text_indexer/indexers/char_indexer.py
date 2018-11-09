@@ -6,7 +6,7 @@ import strpipe as sp
 
 from .base import Indexer
 from .pipe_indexer import PipeIndexer
-from .utils import load_json, save_json
+from .utils import load_json, save_json, mkdir_p
 
 
 class CharIndexer(PipeIndexer):
@@ -119,7 +119,7 @@ class CharIndexer(PipeIndexer):
             self.pipe.fit(['dummy fit'])
 
     def save(self, output_dir: str):
-        os.mkdir(output_dir)
+        mkdir_p(output_dir)
         params = {
             "maxlen": self.maxlen,
             "sos_token": self.sos_token,
@@ -135,5 +135,4 @@ class CharIndexer(PipeIndexer):
         params = load_json(os.path.join(output_dir, 'indexer.json'))
         indexer = cls.create_without_word2vec(**params)
         indexer.pipe = sp.Pipe.restore_from_json(os.path.join(output_dir, 'pipe.json'))
-        indexer.is_fitted = True
         return indexer

@@ -10,6 +10,9 @@ from .indexers import (  # noqa: F401
 
 
 LOGGER = logging.getLogger('__file__')
+INDEXERS = {
+    'CharIndexer': CharIndexer,
+}
 
 
 def save_indexer(
@@ -57,12 +60,12 @@ def load_indexer(
 
 def _validate_file(path: str):
     if not isfile(path):
-        raise ValueError('[{path}] is not a file path.')
+        raise ValueError(f'[{path}] is not a file path.')
 
 
 def _validate_dir(directory: str):
     if not isdir(directory):
-        raise ValueError('[{directory}] is not a directory.')
+        raise ValueError(f'[{directory}] is not a directory.')
 
 
 def _save_name(name: str, path: str) -> None:
@@ -109,4 +112,4 @@ def _gen_extraction_dir(path: str) -> str:
 
 
 def _get_indexer_module(indexer_name: str) -> Indexer:
-    return globals()[indexer_name]
+    return INDEXERS[indexer_name]

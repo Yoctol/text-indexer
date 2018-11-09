@@ -22,9 +22,11 @@ class MockIndexer(object):
 
     @classmethod
     def load(cls, output_dir):
-        load_json(join(output_dir, 'fake_pipe.json'))
+        pipe = load_json(join(output_dir, 'fake_pipe.json'))
         params = load_json(join(output_dir, 'fake_indexer.json'))
-        return cls(**params)
+        indexer = cls(**params)
+        indexer.pipe = pipe
+        return indexer
 
 
 class IOTestCase(TestCase):
@@ -40,6 +42,7 @@ class IOTestCase(TestCase):
 
     def test_save_indexer(self):
         export_path = save_indexer(indexer=MockIndexer(), output_dir=self.output_dir)
+        self.assertTrue(exists(export_path))
         os.remove(export_path)
 
     def test_load_indexer(self):
