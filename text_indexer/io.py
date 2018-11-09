@@ -21,7 +21,6 @@ def save_indexer(
         indexer: Indexer,
         output_dir: str,
         logger: logging.Logger = LOGGER,
-        compress: bool = True,
     ) -> str:
 
     _validate_dir(output_dir)
@@ -34,25 +33,13 @@ def save_indexer(
     indexer.save(output_dir)  # save indexer
     del indexer
 
-    if compress:
-        # compress
-        compressed_filepath = _compress_to_tar(output_dir)  # compressed
-        shutil.rmtree(output_dir)  # remove output_dir
-        logger.info(f'Export to {compressed_filepath}')
-
-        return compressed_filepath
-
 
 def load_indexer(
-        path: str,
+        output_dir: str,
         logger: logging.Logger = LOGGER,
     ) -> Indexer:
 
-    _validate_file(path)
-
-    # extract
-    output_dir = _extract_from_tar(path)
-    logger.info(f'Extract to {output_dir}')
+    _validate_dir(output_dir)
 
     # load indexer
     indexer_name = _load_name(_gen_name_path(output_dir))
@@ -90,29 +77,8 @@ def _compress_to_tar(output_dir: str) -> str:
     return tar_path
 
 
-def _extract_from_tar(path: str) -> str:
-    output_dir = _gen_extraction_dir(path)
-    with tarfile.open(path, "r:gz") as tar:
-        tar.extractall(path=output_dir)
-    return output_dir
-
-
 def _gen_name_path(directory: str) -> str:
     return join(directory, 'name')
-
-
-def _gen_compression_path(directory: str) -> str:
-    parent_dir = dirname(dirname(directory))
-    dir_name = basename(dirname(directory))
-    path = join(parent_dir, f'{dir_name}-all.tar.gz')
-    return path
-
-
-def _gen_extraction_dir(path: str) -> str:
-    parent_dir = dirname(path)
-    filename = basename(path)
-    output_dirname = '{}/'.format(filename.split('-')[0])
-    return join(parent_dir, output_dirname)
 
 
 def _get_indexer_module(indexer_name: str) -> Indexer:

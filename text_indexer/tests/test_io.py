@@ -1,3 +1,4 @@
+from typing import List
 from unittest import TestCase
 from unittest.mock import patch
 import shutil
@@ -8,7 +9,19 @@ from ..io import save_indexer, load_indexer
 from text_indexer.indexers.utils import save_json, load_json
 
 
+def list_all_files(root: str) -> List[str]:
+    output = []
+    for prefix, _, files in os.walk(root):
+        for f in files:
+            path = os.path.join(prefix, f)
+            output.append(path)
+    return output
+
+
 class MockIndexer(object):
+
+    pipe_filename = 'fake_pipe.json'
+    indexer_filename = 'fake_indexer.json'
 
     def __init__(self, aa=1, bb=2):
         self.aa = aa
@@ -17,13 +30,13 @@ class MockIndexer(object):
         self.b = 2
 
     def save(self, output_dir):
-        save_json({'a': self.a, 'b': self.b}, join(output_dir, 'fake_pipe.json'))
-        save_json({'aa': self.aa, 'bb': self.bb}, join(output_dir, 'fake_indexer.json'))
+        save_json({'a': self.a, 'b': self.b}, join(output_dir, self.pipe_filename))
+        save_json({'aa': self.aa, 'bb': self.bb}, join(output_dir, self.indexer_filename))
 
     @classmethod
     def load(cls, output_dir):
-        pipe = load_json(join(output_dir, 'fake_pipe.json'))
-        params = load_json(join(output_dir, 'fake_indexer.json'))
+        pipe = load_json(join(output_dir, cls.pipe_filename))
+        params = load_json(join(output_dir, cls.indexer_filename))
         indexer = cls(**params)
         indexer.pipe = pipe
         return indexer
@@ -41,13 +54,21 @@ class IOTestCase(TestCase):
             shutil.rmtree(self.output_dir)
 
     def test_save_indexer(self):
-        export_path = save_indexer(indexer=MockIndexer(), output_dir=self.output_dir)
-        self.assertTrue(exists(export_path))
-        os.remove(export_path)
+        save_indexer(indexer=MockIndexer(), output_dir=self.output_dir)
+        self.assertTrue(exists(self.output_dir))
+        self.assertEqual(
+            set(
+                [
+                    os.path.join(self.output_dir, MockIndexer.pipe_filename),
+                    os.path.join(self.output_dir, MockIndexer.indexer_filename),
+                    os.path.join(self.output_dir, 'name'),
+                ],
+            ),
+            set(list_all_files(self.output_dir)),
+        )
 
     def test_load_indexer(self):
-        export_path = save_indexer(indexer=MockIndexer(), output_dir=self.output_dir)
+        save_indexer(indexer=MockIndexer(), output_dir=self.output_dir)
         with patch('text_indexer.io._get_indexer_module', return_value=MockIndexer):
-            load_indexer(export_path)
+            load_indexer(self.output_dir)
         self.assertTrue(exists(self.output_dir))
-        os.remove(export_path)
