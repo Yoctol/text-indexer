@@ -3,7 +3,7 @@ import tarfile
 import shutil
 import logging
 
-from .indexers import (  # noqa: F401
+from .indexers import (
     Indexer,
     CharIndexer,
 )
