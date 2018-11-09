@@ -25,6 +25,7 @@ def save_indexer(
 
     # save indexer class name
     class_name = indexer.__class__.__name__
+    logger.info(f'Saving indexer [{class_name}] to {output_dir}')
     _save_name(class_name, _gen_name_path(output_dir))
 
     # save indexer
@@ -38,6 +39,7 @@ def load_indexer(
     ) -> Indexer:
 
     _validate_dir(output_dir)
+    logger.info(f'Loading indexer from {output_dir}')
 
     # load indexer
     indexer_name = _load_name(_gen_name_path(output_dir))
