@@ -49,3 +49,5 @@ class IOTestCase(TestCase):
         export_path = save_indexer(indexer=MockIndexer(), output_dir=self.output_dir)
         with patch('text_indexer.io._get_indexer_module', return_value=MockIndexer):
             load_indexer(export_path)
+        self.assertTrue(exists(self.output_dir))
+        os.remove(export_path)
