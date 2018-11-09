@@ -12,7 +12,7 @@ except IOError:
 
 setup(
     name='text-indexer',
-    version='0.0.1',
+    version='1.0.0',
     description="Yoctol Text Indexer",
     url="https://github.com/Yoctol/text-indexer",
     license="MIT",
