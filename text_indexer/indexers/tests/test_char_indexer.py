@@ -15,6 +15,9 @@ def load_w2v(path: str):
 
 class CharIndexerWithoutW2vTestCase(TestTemplate, TestCase):
 
+    def get_indexer_class(self):
+        return CharIndexer
+
     def get_indexer(self):
         return CharIndexer.create_without_word2vec(
             sos_token=self.sos_token,
@@ -75,28 +78,13 @@ class CharIndexerWithW2vTestCase(CharIndexerWithoutW2vTestCase):
         )
 
     def test_embedding_correct(self):
-        self.assertEqual(
-            self.indexer.word2vec,
-            self.test_emb,
-        )
+        self.assertEqual(self.indexer.word2vec, self.test_emb)
 
     def test_transform_and_fit_dont_change(self):
         tx_data, meta = self.indexer.transform(self.input_data)
         correct_idxs, correct_seqs = self.get_correct_idxs_and_seqlen_of_input_data()
-        self.assertEqual(
-            correct_idxs,
-            tx_data,
-        )
-        self.assertEqual(
-            correct_seqs,
-            meta['seqlen'],
-        )
+        self.assertEqual(correct_idxs, tx_data)
+        self.assertEqual(correct_seqs, meta['seqlen'])
         self.indexer.fit(self.input_data)
-        self.assertEqual(
-            correct_idxs,
-            tx_data,
-        )
-        self.assertEqual(
-            correct_seqs,
-            meta['seqlen'],
-        )
+        self.assertEqual(correct_idxs, tx_data)
+        self.assertEqual(correct_seqs, meta['seqlen'])

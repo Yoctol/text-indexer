@@ -1,9 +1,12 @@
 from typing import List
+import os
 import warnings
 
 import strpipe as sp
 
+from .base import Indexer
 from .pipe_indexer import PipeIndexer
+from .utils import load_json, save_json, mkdir_p
 
 
 class CharIndexer(PipeIndexer):
@@ -114,3 +117,22 @@ class CharIndexer(PipeIndexer):
                 UserWarning,
             )
             self.pipe.fit(['dummy fit'])
+
+    def save(self, output_dir: str):
+        mkdir_p(output_dir)
+        params = {
+            "maxlen": self.maxlen,
+            "sos_token": self.sos_token,
+            "eos_token": self.eos_token,
+            "pad_token": self.pad_token,
+            "unk_token": self.unk_token,
+        }
+        save_json(params, os.path.join(output_dir, 'indexer.json'))
+        self.pipe.save_json(os.path.join(output_dir, 'pipe.json'))
+
+    @classmethod
+    def load(cls, output_dir: str) -> Indexer:
+        params = load_json(os.path.join(output_dir, 'indexer.json'))
+        indexer = cls.create_without_word2vec(**params)
+        indexer.pipe = sp.Pipe.restore_from_json(os.path.join(output_dir, 'pipe.json'))
+        return indexer

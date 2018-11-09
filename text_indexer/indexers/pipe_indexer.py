@@ -1,10 +1,10 @@
 import abc
 from typing import List, Tuple
 
-from .base import BaseIndexer
+from .base import Indexer
 
 
-class PipeIndexer(BaseIndexer):
+class PipeIndexer(Indexer):
 
     def __init__(
             self,

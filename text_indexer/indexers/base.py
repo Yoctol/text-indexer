@@ -1,9 +1,9 @@
 from typing import List, Tuple
 
-from abc import abstractmethod, ABC
+from abc import abstractmethod, abstractclassmethod, ABC
 
 
-class BaseIndexer(ABC):
+class Indexer(ABC):
 
     @abstractmethod
     def fit(self, utterances: List[str]):
@@ -23,4 +23,12 @@ class BaseIndexer(ABC):
             data: List[List[int]],
         ) -> List[str]:
         """Restore indices to strings"""
+        pass
+
+    @abstractmethod
+    def save(self, output_path: str):
+        pass
+
+    @abstractclassmethod
+    def load(cls, output_path: str):
         pass
