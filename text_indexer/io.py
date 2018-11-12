@@ -1,3 +1,4 @@
+import os
 from os.path import join, isdir
 import logging
 
@@ -21,11 +22,12 @@ def save_indexer(
         logger: logging.Logger = LOGGER,
     ) -> str:
 
-    _validate_dir(output_dir)
+    if not isdir(output_dir):
+        os.makedirs(output_dir, exist_ok=True)
 
     # save indexer class name
     class_name = indexer.__class__.__name__
-    logger.info(f'Saving indexer [{class_name}] to {output_dir}')
+    logger.info(f'Saving indexer {class_name} to {output_dir}')
     _save_name(class_name, _gen_name_path(output_dir))
 
     # save indexer
@@ -51,7 +53,7 @@ def load_indexer(
 
 def _validate_dir(directory: str):
     if not isdir(directory):
-        raise ValueError(f'[{directory}] is not a directory.')
+        raise ValueError(f'{directory} is not a directory.')
 
 
 def _save_name(name: str, path: str) -> None:
