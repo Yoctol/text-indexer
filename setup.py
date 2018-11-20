@@ -21,7 +21,7 @@ setup(
     packages=find_packages(),
     python_requires='>=3.6',
     install_requires=[
-        "strpipe==0.4.7",
+        "strpipe==0.5.0",
         "u-msgpack-python==2.5.0",
     ],
     include_package_data=True,
