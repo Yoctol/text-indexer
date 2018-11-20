@@ -91,7 +91,6 @@
                 "sha256:f71f1a7e2d03758f6e957896ed696254e2bc83110ddbc6942018f1a232dd9dad",
                 "sha256:fb944c8f0b0ab5c1f7846c686bc4cdf8cde7224655c12edcd59d5212cd57bec0"
             ],
-            "markers": "python_version >= '3.5'",
             "version": "==0.23.4"
         },
         "purewords": {
@@ -124,9 +123,9 @@
         },
         "strpipe": {
             "hashes": [
-                "sha256:2a24e3f8dd335ce031258f2d2d0b74e52930cf6a68ffad1598592a569013298e"
+                "sha256:06153d1c56479a007715d3641bbd676a3ff7f51b9b62ef4bec71427dab7572e8"
             ],
-            "version": "==0.4.7"
+            "version": "==0.5.0"
         },
         "text-indexer": {
             "editable": true,
@@ -244,7 +243,6 @@
                 "sha256:a5781d6934a3341a1f9acb4ea5acdc7ea0a0855e689dbe755d070ca51e995435",
                 "sha256:b10a7ddd03657c761fc503495bc36471c8158e3fc948573fb9fe82a7029d8efd"
             ],
-            "markers": "python_version >= '3.3'",
             "version": "==7.1.1"
         },
         "ipython-genutils": {
