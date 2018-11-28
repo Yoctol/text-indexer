@@ -3,27 +3,35 @@ from unittest import TestCase
 from pathlib import Path
 
 from .template import TestTemplate
-from ..char_indexer import CharIndexer
+from ..en_word_indexer import EnWordIndexer
 from .utils import load_w2v, export_word2vec
 
 
-class CharIndexerWithoutW2vTestCase(TestTemplate, TestCase):
+class EnWordIndexerWithoutW2vTestCase(TestTemplate, TestCase):
 
     @classmethod
     def get_data(cls):
-        cls.maxlen = 7
+        cls.maxlen = 10
         cls.input_data = [
-            '克安是牛肉大粉絲',  # longer than 7 after adding sos eos
-            '繼良喜歡喝星巴巴',  # longer than 7 after adding sos eos
-            '安靜的祥睿',  # equal to 7 after adding sos eos
-            '喔',  # shorter than 7 after adding sos eos
+            "Jsaon is craving for working in Angel Cafe.",
+            "GB loves ramen!",
+            "Alvin enthuses over Soylent.",
+            "Girls shorter than 150cm are CPH's desire?",
+            "Liang's family owns a bank.",
+        ]
+        cls.tokenized_input_data = [
+            ["Jsaon", "is", "craving", "for", "working", "in", "Angel", "Cafe", "."],
+            ["GB", "loves", "ramen", "!"],
+            ["Alvin", "enthuses", "over", "Soylent", "."],
+            ["Girls", "shorter", "than", "150cm", "are", "CPH", "'", "s", "desire", "?"],
+            ["Liang", "'", "s", "family", "owns", "a", "bank", "."],
         ]
 
     def get_indexer_class(self):
-        return CharIndexer
+        return EnWordIndexer
 
     def get_indexer(self):
-        return CharIndexer.create_without_word2vec(
+        return EnWordIndexer.create_without_word2vec(
             sos_token=self.sos_token,
             eos_token=self.eos_token,
             pad_token=self.pad_token,
@@ -33,7 +41,7 @@ class CharIndexerWithoutW2vTestCase(TestTemplate, TestCase):
 
     def get_correct_idxs_and_seqlen_of_input_data(self):
         correct_idxs = []
-        for sent in self.input_data:
+        for sent in self.tokenized_input_data:
             sent_idxs = [self.indexer.word2index(self.indexer.sos_token)]
             for word in sent:
                 try:
@@ -54,7 +62,7 @@ class CharIndexerWithoutW2vTestCase(TestTemplate, TestCase):
 
         correct_seqs = [
             min(len(sent) + 2, self.maxlen)
-            for sent in self.input_data
+            for sent in self.tokenized_input_data
         ]
         return correct_idxs, correct_seqs
 
@@ -62,21 +70,22 @@ class CharIndexerWithoutW2vTestCase(TestTemplate, TestCase):
         self.assertIsNone(self.indexer.word2vec)
 
 
-class CharIndexerWithW2vTestCase(CharIndexerWithoutW2vTestCase):
+class EnWordIndexerWithW2vTestCase(EnWordIndexerWithoutW2vTestCase):
 
     @classmethod
     def setUpClass(cls):
-        word2vec_path = str(Path(__file__).resolve().parent.joinpath('data/example.msg'))
+        word2vec_path = str(Path(__file__).resolve().parent.joinpath('data/en_example.msg'))
         export_word2vec(
-            words=["<sos>", "</s>", "<pad>", "<unk>", "克",
-                   "安", "星", "巴", "靜", "絲", "祥"],
+            words=["<sos>", "</s>", "<pad>", "<unk>", ".", "'", "?", "!",
+                   "Jsaon", "GB", "Alvin", "CPH", "Liang", "is", "are",
+                   "loves", "working", "bank", "Girls", "than"],
             path=word2vec_path,
         )
         cls.test_emb = load_w2v(word2vec_path)
         super().setUpClass()
 
     def get_indexer(self):
-        return CharIndexer.create_with_word2vec(
+        return EnWordIndexer.create_with_word2vec(
             word2vec=self.test_emb,
             sos_token=self.sos_token,
             eos_token=self.eos_token,
