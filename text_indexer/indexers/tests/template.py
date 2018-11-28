@@ -21,14 +21,8 @@ class TestTemplate(abc.ABC):
         cls.eos_token = '</s>'
         cls.pad_token = '<pad>'
         cls.unk_token = '<unk>'
-        cls.maxlen = 7
-        cls.input_data = [
-            '克安是牛肉大粉絲',  # longer than 7 after adding sos eos
-            '繼良喜歡喝星巴巴',  # longer than 7 after adding sos eos
-            '安靜的祥睿',  # equal to 7 after adding sos eos
-            '喔',  # shorter than 7 after adding sos eos
-        ]
         cls.output_dir = Path(__file__).parent / 'example_indexer/'
+        cls.get_data()
 
     def setUp(self):
         self.indexer = self.get_indexer()
@@ -37,6 +31,10 @@ class TestTemplate(abc.ABC):
     def tearDown(self):
         if self.output_dir.exists():
             shutil.rmtree(str(self.output_dir))
+
+    @abc.abstractclassmethod
+    def get_data(cls):
+        pass
 
     @abc.abstractmethod
     def get_indexer_class(self):
@@ -82,5 +80,6 @@ class TestTemplate(abc.ABC):
         indexer = self.get_indexer_class().load(str(self.output_dir))
         tx_data, meta = indexer.transform(self.input_data)
         correct_idxs, correct_seqs = self.get_correct_idxs_and_seqlen_of_input_data()
+
         self.assertEqual(correct_idxs, tx_data)
         self.assertEqual(correct_seqs, meta['seqlen'])
